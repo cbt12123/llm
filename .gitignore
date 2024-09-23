@@ -5,3 +5,4 @@
 /fcc-gpt-course/datasets/openwebtext
 
 *.pkl
+*.pth

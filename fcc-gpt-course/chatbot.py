@@ -28,8 +28,10 @@ n_head = 8
 n_layer = 8
 dropout = 0.2
 
+vocab_path = 'datasets/openwebtext/vocab.txt'
+
 chars = ""
-with open('vocab.txt', 'r', encoding='utf-8') as f:
+with open(vocab_path, 'r', encoding='utf-8') as f:
     text = f.read()
     chars = sorted(list(set(text)))
 # print(chars)

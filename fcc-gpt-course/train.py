@@ -18,9 +18,9 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(device)
 
 batch_size = args.batch_size
-block_size = 128
+block_size = 256
 
-max_iters = 10000
+max_iters = 50000
 learning_rate = 3e-4
 eval_iters = 100
 n_embd = 384
@@ -28,8 +28,12 @@ n_head = 8
 n_layer = 8
 dropout = 0.2
 
+train_path = 'datasets/openwebtext/train_split.txt'
+valid_path = 'datasets/openwebtext/val_split.txt'
+vocab_path = 'datasets/openwebtext/vocab.txt'
+
 chars = ""
-with open('vocab.txt', 'r', encoding='utf-8') as f:
+with open(vocab_path, 'r', encoding='utf-8') as f:
     text = f.read()
     chars = sorted(list(set(text)))
 # print(chars)
@@ -41,9 +45,11 @@ int_to_string = { i:ch for i,ch in enumerate(chars) }
 encode = lambda s: [string_to_int[c] for c in s]
 decode = lambda l: ''.join([int_to_string[i] for i in l])
 
+
+
 # memory map for using small snippets
 def get_random_chunk(split):
-    filename = "train_split.txt" if split == "train" else "val_split.txt"
+    filename = train_path if split == "train" else valid_path
     with open(filename, 'rb') as f:
         with mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as mm:
             # Determine the file size and a random position to start reading
